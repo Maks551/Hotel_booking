@@ -1,5 +1,6 @@
 package com.example.hotel_booking.model;
 
+import com.example.hotel_booking.HasId;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,13 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity {
-    protected static final String DATE_PATTERN = "yyyy-MM-dd";
+public abstract class AbstractBaseEntity implements HasId {
+    public static final int START_SEQ = 100000;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @Column(name = "id")
     protected Integer id;
 
     AbstractBaseEntity(Integer id) {
@@ -39,7 +42,8 @@ public abstract class AbstractBaseEntity {
         return id != null ? id : 0;
     }
 
-    public boolean isNew() {
-        return getId() == null;
+    @Override
+    public String toString() {
+        return String.format("Entity %s (%s)", getClass().getName(), id);
     }
 }

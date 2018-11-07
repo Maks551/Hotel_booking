@@ -11,19 +11,22 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+import static com.example.hotel_booking.util.Util.DATE_PATTERN;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "reserved_rooms", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "start_date"},
+@Table(name = "bookings", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "start_date"},
         name = "reserved_unique_user_datetime_idx"))
-public class Reserved extends AbstractBaseEntity{
+public class Booking extends AbstractBaseEntity{
     @NotNull
     @DateTimeFormat(pattern = DATE_PATTERN)
-    @Column(name = "start_date")
+    @Column(name = "start_date", columnDefinition = "DATE DEFAULT now()")
     private LocalDate startDate;
     @NotNull
     @DateTimeFormat(pattern = DATE_PATTERN)
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,13 +34,22 @@ public class Reserved extends AbstractBaseEntity{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public Reserved(Integer id, LocalDate startDate, LocalDate endDate) {
+    public Booking(Integer id, LocalDate startDate, LocalDate endDate) {
         super(id);
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 }

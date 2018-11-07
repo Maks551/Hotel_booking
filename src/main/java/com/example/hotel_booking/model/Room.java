@@ -1,11 +1,13 @@
 package com.example.hotel_booking.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Setter
 @Getter
@@ -20,9 +22,9 @@ public class Room extends AbstractBaseEntity{
     @NotBlank
     private int price;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "room")
-    @OrderBy("startDate")
-    private Reserved reserved;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    private List<Booking> bookings;
 
     // Additional options
         // breakfast order
@@ -30,7 +32,7 @@ public class Room extends AbstractBaseEntity{
         // ordering to clean the room
     private boolean cleaning;
 
-    public Room(Integer id, int number, int category, int price,  boolean breakfast, boolean cleaning) {
+    public Room(Integer id, int number, int category, int price, boolean breakfast, boolean cleaning) {
         super(id);
         this.number = number;
         this.category = category;
