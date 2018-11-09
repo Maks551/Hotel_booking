@@ -52,9 +52,9 @@ class UserServiceTest {
     @Test
     void create() {
         User newUser = new User(null, "Created", "created@gmail.com", "password", Role.ROLE_USER);
-        User createUser = service.create(new User(newUser));
-        newUser.setId(createUser.getId());
-        assertMatch(newUser, createUser);
+        User created = service.create(new User(newUser));
+        newUser.setId(created.getId());
+        assertMatch(newUser, created);
     }
 
     @Test

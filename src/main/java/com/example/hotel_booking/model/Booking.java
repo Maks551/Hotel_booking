@@ -38,6 +38,10 @@ public class Booking extends AbstractBaseEntity{
     @JoinColumn(name = "room_id")
     private Room room;
 
+    public Booking(Booking booking) {
+        this(booking.getId(), booking.getStartDate(), booking.getEndDate());
+    }
+
     public Booking(Integer id, LocalDate startDate, LocalDate endDate) {
         super(id);
         this.startDate = startDate;

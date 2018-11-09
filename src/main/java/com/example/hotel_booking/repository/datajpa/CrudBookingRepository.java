@@ -13,7 +13,14 @@ import java.util.List;
 public interface CrudBookingRepository extends JpaRepository<Booking, Integer> {
 
     @Override
+    @Transactional
+    Booking save(Booking booking);
+
+    @Override
     List<Booking> findAll();
+
+    @Query("SELECT b FROM Booking b WHERE b.user.id=:userId ORDER BY b.startDate")
+    List<Booking> getAll(@Param("userId") int userId);
 
     @Query("SELECT b FROM Booking b " +
             "WHERE b.startDate <= :startDate AND b.endDate > :startDate " +
