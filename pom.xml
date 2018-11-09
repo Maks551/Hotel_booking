@@ -5,81 +5,246 @@
 
     <groupId>com.example</groupId>
     <artifactId>hotel_booking</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
+
+    <version>1.0-SNAPSHOT</version>
 
     <name>Hotel_booking</name>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
+        <spring.version>5.0.7.RELEASE</spring.version>
+        <spring-data-jpa.version>2.0.8.RELEASE</spring-data-jpa.version>
+        <jackson-json.version>2.9.6</jackson-json.version>
+
+        <tomcat.version>9.0.12</tomcat.version>
+
+        <!-- Logging -->
+        <logback.version>1.2.3</logback.version>
+        <slf4j.version>1.7.25</slf4j.version>
+
+        <!--    DB  -->
+        <h2.version>1.4.197</h2.version>
+
+        <!--    Tests  -->
+        <junit.jupiter.version>5.2.0</junit.jupiter.version>
+        <surefire-plugin.version>2.22.0</surefire-plugin.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <jsonassert.version>1.5.0</jsonassert.version>
+        <json-path.version>2.4.0</json-path.version>
+
+        <!-- Hibernate -->
+        <hibernate.version>5.3.2.Final</hibernate.version>
+        <hibernate-validator.version>6.0.10.Final</hibernate-validator.version>
+        <javax-el.version>3.0.1-b10</javax-el.version>
+
+        <!-- Lombok -->
+        <lombok.version>1.18.0</lombok.version>
+
+        <!--For Java 9-->
+        <jaxb.version>2.3.0</jaxb.version>
     </properties>
 
+    <build>
+        <finalName>Hotel_booking</finalName>
+        <defaultGoal>package</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
+        <!-- Logging with SLF4J & LogBack -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
-        <!-- Web -->
+        <!-- Spring -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <optional>true</optional>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring-data-jpa.version}</version>
         </dependency>
 
         <!-- DB -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
+        <!--- ORM -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <!--Web-->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
         </dependency>
 
         <!-- Test -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.2.0</version>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${json-path.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.10.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson-json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-json.version}</version>
         </dependency>
 
         <!-- For Java 9 -->
         <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.0</version>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb.version}</version>
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
