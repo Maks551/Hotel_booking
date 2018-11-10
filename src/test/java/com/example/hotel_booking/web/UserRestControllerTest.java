@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-import static com.example.hotel_booking.util.UserTestData.USER;
-import static com.example.hotel_booking.util.UserTestData.USER_ID;
-import static com.example.hotel_booking.util.UserTestData.contentJson;
+import static com.example.hotel_booking.util.UserTestData.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -42,12 +40,5 @@ class UserRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-    }
-
-    @Test
-    void testRegister() {
-        service.getAll().forEach(System.out::println);
-        service.create(new User(null, "Max", "e@gmail.com", "password", Role.ROLE_USER));
-        service.getAll().forEach(System.out::println);
     }
 }

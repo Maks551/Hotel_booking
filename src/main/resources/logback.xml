@@ -5,7 +5,7 @@
     <jmxConfigurator/>
 
     <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>${HOTEL_ROOT}/log/restaurant.log</file>
+        <file>${HOTEL_ROOT}/log/hotel_booking.log</file>
 
         <encoder>
             <charset>UTF-8</charset>

@@ -18,11 +18,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public int getPrice(int id, int userId) {
-        return 0;
-    }
-
-    @Override
     public Booking create(Booking booking, int roomId, int userId) {
         Assert.notNull(booking, "booking must not be null");
         return repository.save(booking, roomId, userId);
@@ -43,7 +38,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAll(int userId) {
-        return repository.getAll(userId);
+    public List<Booking> getAllByUser(int userId) {
+        return repository.getAllByUser(userId);
+    }
+
+    @Override
+    public List<Booking> getAll() {
+        return repository.getAll();
     }
 }

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.hotel_booking.util.Util.DATE_PATTERN;
+import static com.example.hotel_booking.util.Util.getValidDates;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -31,22 +32,16 @@ public class RoomRestController {
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = DATE_PATTERN) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = DATE_PATTERN) LocalDate endDate) {
 
-        LocalDate start, end;
-        if (startDate == null && endDate == null) {
-            start = LocalDate.now();
-            end = start.plusDays(1);
-        } else {
-            start = startDate == null ? endDate.minusDays(1) : startDate;
-            end = endDate == null ? startDate.plusDays(1) : endDate;
-        }
+        LocalDate[] validDates = getValidDates(startDate, endDate);
+        LocalDate validStartDate = validDates[0];
+        LocalDate validEndDate = validDates[1];
 
-        log.info("get all available rooms between {} and {}", start, end);
-        return service.getAllByAvailableBetween(start, end);
+        log.info("get all available rooms between {} and {}", validStartDate, validEndDate);
+        return service.getAllByAvailableBetween(validStartDate, validEndDate);
     }
 
     /**
-     * @param category is a Room category.
-     *                 category > 0.
+     * @param category is a Room category (category > 0).
      * */
     @GetMapping(value = "/category/{category}", produces = APPLICATION_JSON_VALUE)
     public List<Room> getAllByCategory(@PathVariable("category") int category) {
