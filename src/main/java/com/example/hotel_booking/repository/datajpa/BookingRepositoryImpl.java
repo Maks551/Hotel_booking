@@ -40,12 +40,17 @@ public class BookingRepositoryImpl implements BookingRepository {
     }
 
     @Override
-    public List<Booking> getAll(int userId) {
+    public List<Booking> getAllByUser(int userId) {
         return crudBookingRepo.getAll(userId);
     }
 
     @Override
     public List<Booking> getAllBetweenWithRooms(LocalDate startDate, LocalDate endDate) {
         return crudBookingRepo.getAllBetweenWithRooms(startDate, endDate);
+    }
+
+    @Override
+    public List<Booking> getAll() {
+        return crudBookingRepo.findAll();
     }
 }

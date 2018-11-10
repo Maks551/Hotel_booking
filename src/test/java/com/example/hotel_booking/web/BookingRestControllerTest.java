@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import java.time.LocalDate;
 
 import static com.example.hotel_booking.util.BookingTestData.BOOKING_LIST_BY_USER_1;
+import static com.example.hotel_booking.util.BookingTestData.LIST_BOOKINGS;
 import static com.example.hotel_booking.util.RoomTestData.ROOM_ID;
 import static com.example.hotel_booking.util.TestUtil.contentJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,11 +33,20 @@ class BookingRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testGetAll() throws Exception {
-        mockMvc.perform(get(REST_URL + "all"))
+    void testGetAllWithRoomsByUser() throws Exception {
+        mockMvc.perform(get(REST_URL + "all/my"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(BOOKING_LIST_BY_USER_1));
+    }
+
+    @Test
+    void testGetAllWithRooms() throws Exception {
+        mockMvc.perform(get(REST_URL + "all"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(LIST_BOOKINGS));
     }
 }

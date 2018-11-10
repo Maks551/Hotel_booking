@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.awt.print.Book;
 import java.net.URI;
 import java.util.List;
 
@@ -30,13 +29,18 @@ public class BookingRestController {
         this.service = service;
     }
 
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Booking> getAllWithRooms() {
+    @GetMapping(value = "/all/my", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Booking> getAllWithRoomsByUser() {
         int userId = SecurityUtil.authUserId();
         log.info("get all booking with room by userId {}", userId);
-        return service.getAll(userId);
+        return service.getAllByUser(userId);
     }
 
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Booking> getAllWithRooms() {
+        log.info("get all booking with room");
+        return service.getAll();
+    }
 
     @PostMapping(value = "/{roomId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)

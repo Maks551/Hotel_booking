@@ -43,7 +43,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAll(int userId) {
-        return repository.getAll(userId);
+    public List<Booking> getAllByUser(int userId) {
+        return repository.getAllByUser(userId);
+    }
+
+    @Override
+    public List<Booking> getAll() {
+        return repository.getAll();
     }
 }

@@ -9,13 +9,15 @@ public interface BookingService {
     Booking create(Booking booking, int roomId, int userId);
 
     void update(Booking booking, int roomId, int userId);
-//
-//    void delete(int id, int userId);
 
+    // booking for the hotel by id and userId
     Booking get(int id, int userId);
 
-    // all bookings for user by userId
-    List<Booking> getAll(int userId);
+    // all bookings for the hotel by userId
+    List<Booking> getAllByUser(int userId);
 
     int getPrice(int id, int userId);
+
+    // all bookings for the hotel
+    List<Booking> getAll();
 }

@@ -30,6 +30,7 @@ public class BookingTestData {
     public static final Booking BOOKING_6 = new Booking(BOOKING6_ID,
             LocalDate.of(2018, 11, 14), LocalDate.of(2018, 11, 15));
 
+    public static final List<Booking> LIST_BOOKINGS = Arrays.asList(BOOKING, BOOKING_2, BOOKING_3, BOOKING_4, BOOKING_5, BOOKING_6);
     public static final List<Booking> BOOKING_LIST_BY_USER_1 = Arrays.asList(BOOKING, BOOKING_5, BOOKING_6);
 
     public static void assertMatch(Booking actual, Booking expected) {
