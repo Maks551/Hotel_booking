@@ -1,6 +1,6 @@
 # Hotel_booking
 
-**Version 0.0.1-SNAPSHOT**
+**Version 1.0-SNAPSHOT**
 
 #### getAllByAvailable
 When viewing available numbers for the specified dates, the following logic applies:

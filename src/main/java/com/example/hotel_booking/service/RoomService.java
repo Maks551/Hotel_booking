@@ -8,12 +8,12 @@ import java.util.List;
 public interface RoomService {
 
     //Create only from Admin
-    Room create(Room room);
+    Room create(Room room, int userId);
 
     //Create only from Admin
-    void update(Room room);
+    void update(Room room, int userId);
 
-    void delete(int id);
+    void delete(int id, int userId);
 
     Room get(int id);
 

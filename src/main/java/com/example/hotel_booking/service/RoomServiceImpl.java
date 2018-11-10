@@ -21,25 +21,25 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room create(Room room) {
+    public Room create(Room room, int userId) {
         Assert.notNull(room, "room must not be null");
-        return repository.save(room);
+        return repository.save(room, userId);
     }
 
     @Override
-    public void update(Room room) {
+    public void update(Room room, int userId) {
         Assert.notNull(room, "room must not be null");
-        checkNotFoundWithId(repository.save(room), room.getId());
+        checkNotFoundWithId(repository.save(room, userId), room.getId());
     }
 
     @Override
-    public void delete(int id) {
-
+    public void delete(int id, int userId) {
+        checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
     @Override
     public Room get(int id) {
-        return null;
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
     @Override
@@ -49,6 +49,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getAllByAvailableBetween(LocalDate startDate, LocalDate endDate) {
+        Assert.notNull(startDate, "startDate must not be null");
+        Assert.notNull(endDate, "endDate  must not be null");
         return repository.getAllByAvailableBetween(startDate, endDate);
     }
 

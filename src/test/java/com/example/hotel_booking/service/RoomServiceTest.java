@@ -1,23 +1,16 @@
 package com.example.hotel_booking.service;
 
+import com.example.hotel_booking.AbstractServiceTest;
 import com.example.hotel_booking.model.Room;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.hotel_booking.util.RoomTestData.*;
 
-@SpringJUnitConfig(locations = {
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-class RoomServiceTest {
+class RoomServiceTest extends AbstractServiceTest {
 
     @Autowired
     private RoomService service;

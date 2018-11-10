@@ -4,6 +4,7 @@ import com.example.hotel_booking.model.Booking;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.example.hotel_booking.model.AbstractBaseEntity.START_SEQ;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +29,8 @@ public class BookingTestData {
             LocalDate.of(2018, 11, 11), LocalDate.of(2018, 11, 12));
     public static final Booking BOOKING_6 = new Booking(BOOKING6_ID,
             LocalDate.of(2018, 11, 14), LocalDate.of(2018, 11, 15));
+
+    public static final List<Booking> BOOKING_LIST_BY_USER_1 = Arrays.asList(BOOKING, BOOKING_5, BOOKING_6);
 
     public static void assertMatch(Booking actual, Booking expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "user", "room");

@@ -1,11 +1,9 @@
 package com.example.hotel_booking.service;
 
+import com.example.hotel_booking.AbstractServiceTest;
 import com.example.hotel_booking.model.Booking;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 
@@ -13,12 +11,7 @@ import static com.example.hotel_booking.util.BookingTestData.*;
 import static com.example.hotel_booking.util.RoomTestData.ROOM_ID;
 import static com.example.hotel_booking.util.UserTestData.USER_ID;
 
-@SpringJUnitConfig(locations = {
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-class BookingServiceTest {
+class BookingServiceTest extends AbstractServiceTest {
     @Autowired
     private BookingService service;
 
@@ -46,6 +39,6 @@ class BookingServiceTest {
 
     @Test
     void getAll() {
-        service.getAll(USER_ID).forEach(System.out::println);
+        assertMatch(service.getAll(USER_ID), BOOKING, BOOKING_5, BOOKING_6);
     }
 }

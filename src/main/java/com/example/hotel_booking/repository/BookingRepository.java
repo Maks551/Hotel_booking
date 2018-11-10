@@ -13,8 +13,6 @@ public interface BookingRepository {
 
 //    int getPrice(int id, int userId);
 
-//    List<Booking> getAllBetween(LocalDate startDate, LocalDate endDate, int userId);
-
     List<Booking> getAllBetweenWithRooms(LocalDate startDate, LocalDate endDate);
 
     List<Booking> getAll(int userId);

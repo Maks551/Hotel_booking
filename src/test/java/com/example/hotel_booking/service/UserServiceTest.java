@@ -1,23 +1,16 @@
 package com.example.hotel_booking.service;
 
+import com.example.hotel_booking.AbstractServiceTest;
 import com.example.hotel_booking.model.Role;
 import com.example.hotel_booking.model.User;
 import com.example.hotel_booking.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static com.example.hotel_booking.util.UserTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringJUnitConfig(locations = {
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-class UserServiceTest {
+class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private UserService service;

@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.awt.print.Book;
 import java.net.URI;
+import java.util.List;
 
 import static com.example.hotel_booking.util.ValidationUtil.checkNew;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = BookingRestController.REST_URL)
@@ -29,13 +30,21 @@ public class BookingRestController {
         this.service = service;
     }
 
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Booking> getAllWithRooms() {
+        int userId = SecurityUtil.authUserId();
+        log.info("get all booking with room by userId {}", userId);
+        return service.getAll(userId);
+    }
+
+
     @PostMapping(value = "/{roomId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<Booking> createWithLocation(@Valid @RequestBody Booking booking,
                                                       @PathVariable("roomId") int roomId) {
         checkNew(booking);
         int userId = SecurityUtil.authUserId();
-        log.info("create restaurant {} for user {}", booking, userId);
+        log.info("create booking {} for user {}", booking, userId);
         Booking created = service.create(booking, roomId, userId);
 
         URI uriOfNewResponse = ServletUriComponentsBuilder.fromCurrentContextPath()

@@ -6,9 +6,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomRepository {
-    Room save(Room room);
+    Room save(Room room, int userId);
 
-    boolean delete(int id);
+    boolean delete(int id, int userId);
 
     Room get(int id);
 
