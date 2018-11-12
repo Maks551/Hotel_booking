@@ -7,6 +7,8 @@ import com.example.hotel_booking.model.User;
 import com.example.hotel_booking.repository.RoomRepository;
 import com.example.hotel_booking.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -26,34 +28,38 @@ public class RoomRepositoryImpl implements RoomRepository {
         this.userRepo = userRepo;
     }
 
+    @CacheEvict(value = "rooms", allEntries = true)
     @Override
     public Room save(Room room, int userId) {
         User user = userRepo.findById(userId).orElse(null);
         if (user == null || !user.getRoles().contains(Role.ROLE_ADMIN)) {
-            throw new NotFoundException("user mast be admin");
+            throw new NotFoundException("users mast be admin");
         }
         return roomRepo.save(room);
     }
 
+    @Cacheable("rooms")
     @Override
     public List<Room> getAll() {
         return roomRepo.findAll();
     }
 
+    @CacheEvict(value = "rooms", allEntries = true)
     @Override
     public boolean delete(int id, int userId) {
         User user = userRepo.findById(userId).orElse(null);
         if (user == null || !user.getRoles().contains(Role.ROLE_ADMIN)) {
-            throw new NotFoundException("user mast be admin");
+            throw new NotFoundException("users mast be admin");
         }
         return roomRepo.delete(id) != 0;
     }
 
     @Override
     public Room get(int id) {
-        return null;
+        return roomRepo.findById(id).orElse(null);
     }
 
+    @Cacheable("rooms")
     @Override
     public List<Room> getAllByAvailableBetween(LocalDate startDate, LocalDate endDate) {
         List<Room> allRooms = getAll();
@@ -64,8 +70,9 @@ public class RoomRepositoryImpl implements RoomRepository {
         return allRooms;
     }
 
+    @Cacheable("rooms")
     @Override
     public List<Room> getAllByCategory(int category) {
-        return getAll().stream().filter(room -> room.getCategory()==category).collect(Collectors.toList());
+        return getAll().stream().filter(room -> room.getCategory() == category).collect(Collectors.toList());
     }
 }

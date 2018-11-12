@@ -27,4 +27,7 @@ public interface CrudBookingRepository extends JpaRepository<Booking, Integer> {
             "OR b.startDate < :endDate AND b.endDate >= :endDate")
     List<Booking> getAllBetweenWithRooms(@Param("startDate") LocalDate startDate,
                                          @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT b.allPrice FROM Booking b WHERE b.id=:id")
+    Integer getPrice(@Param("id") int id);
 }

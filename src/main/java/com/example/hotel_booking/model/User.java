@@ -27,6 +27,9 @@ public class User extends AbstractBaseEntity{
     @Column(name = "password")
     private String password;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    private boolean enabled = true;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
@@ -37,18 +40,19 @@ public class User extends AbstractBaseEntity{
     private List<Booking> bookings;
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRoles());
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.isEnabled(), user.getRoles());
     }
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles){
-        this(id, name, email, password, EnumSet.of(role, roles));
+        this(id, name, email, password, true, EnumSet.of(role, roles));
     }
 
-    public User(Integer id, String name, String email, String password, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, boolean enabled, Collection<Role> roles) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
+        this.enabled = enabled;
         setRoles(roles);
     }
 
@@ -62,6 +66,7 @@ public class User extends AbstractBaseEntity{
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", enabled='" + enabled + '\'' +
                 ", roles='" + roles + '\'' +
                 '}';
     }

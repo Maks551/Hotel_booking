@@ -18,4 +18,6 @@ public interface BookingService {
 
     // all bookings for the hotel
     List<Booking> getAll();
+
+    Integer getTotalPrice(int id);
 }

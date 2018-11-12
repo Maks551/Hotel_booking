@@ -3,6 +3,8 @@ package com.example.hotel_booking.repository.datajpa;
 import com.example.hotel_booking.model.Booking;
 import com.example.hotel_booking.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -21,6 +23,7 @@ public class BookingRepositoryImpl implements BookingRepository {
         this.crudRoomRepo = crudRoomRepo;
     }
 
+    @CacheEvict(value = "bookings", allEntries = true)
     @Override
     public Booking save(Booking booking, int roomId, int userId) {
         if (!booking.isNew() && get(booking.getId(), userId) == null) {
@@ -39,18 +42,21 @@ public class BookingRepositoryImpl implements BookingRepository {
         return crudBookingRepo.findById(id).filter(booking -> booking.getUser().getId() == userId).orElse(null);
     }
 
+    @Cacheable(value = "bookings")
     @Override
     public List<Booking> getAllByUser(int userId) {
         return crudBookingRepo.getAll(userId);
     }
 
-    @Override
-    public List<Booking> getAllBetweenWithRooms(LocalDate startDate, LocalDate endDate) {
-        return crudBookingRepo.getAllBetweenWithRooms(startDate, endDate);
-    }
-
+    @Cacheable(value = "bookings")
     @Override
     public List<Booking> getAll() {
         return crudBookingRepo.findAll();
+    }
+
+    @Cacheable(value = "price")
+    @Override
+    public Integer getPrice(int id) {
+        return crudBookingRepo.getPrice(id);
     }
 }

@@ -3,10 +3,14 @@ package com.example.hotel_booking.service;
 import com.example.hotel_booking.model.Booking;
 import com.example.hotel_booking.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+
+import static com.example.hotel_booking.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -34,7 +38,7 @@ public class BookingServiceImpl implements BookingService {
      * */
     @Override
     public Booking get(int id, int userId) {
-        return repository.get(id, userId);
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     @Override
@@ -45,5 +49,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAll() {
         return repository.getAll();
+    }
+
+    @Override
+    public Integer getTotalPrice(int id) {
+        return repository.getPrice(id);
     }
 }

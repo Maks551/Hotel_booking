@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -26,19 +27,26 @@ public class Room extends AbstractBaseEntity{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
     private List<Booking> bookings;
 
-    // Additional options
-        // breakfast order
-    private boolean breakfast;
-        // ordering to clean the room
-    private boolean cleaning;
-
-    public Room(Integer id, int number, int category, int price, boolean breakfast, boolean cleaning) {
+    public Room(Integer id, int number, int category, int price) {
         super(id);
         this.number = number;
         this.category = category;
         this.price = price;
-        this.breakfast = breakfast;
-        this.cleaning = cleaning;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room that = (Room) o;
+        return number == that.number &&
+                category == that.category &&
+                price == that.price;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, category, price);
     }
 
     @Override
@@ -48,8 +56,6 @@ public class Room extends AbstractBaseEntity{
                 ", number=" + number +
                 ", category=" + category +
                 ", price=" + price +
-                ", breakfast=" + breakfast +
-                ", cleaning=" + cleaning +
                 '}';
     }
 }

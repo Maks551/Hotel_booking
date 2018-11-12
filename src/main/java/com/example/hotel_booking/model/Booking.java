@@ -3,11 +3,13 @@ package com.example.hotel_booking.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -29,23 +31,40 @@ public class Booking extends AbstractBaseEntity{
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    // Additional options
+    // breakfast order
+    @NotNull
+    private boolean breakfast;
+    // ordering to clean the room
+    @NotNull
+    private boolean cleaning;
+
+    // all price with all additional options
+    @NotBlank
+    @Column(name = "all_price")
+    private int allPrice;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @BatchSize(size = 50)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     private Room room;
 
     public Booking(Booking booking) {
-        this(booking.getId(), booking.getStartDate(), booking.getEndDate());
+        this(booking.getId(), booking.getStartDate(), booking.getEndDate(), booking.isBreakfast(), booking.isCleaning(), booking.getAllPrice());
     }
 
-    public Booking(Integer id, LocalDate startDate, LocalDate endDate) {
+    public Booking(Integer id, LocalDate startDate, LocalDate endDate, boolean breakfast, boolean cleaning, int allPrice) {
         super(id);
         this.startDate = startDate;
         this.endDate = endDate;
+        this.breakfast = breakfast;
+        this.cleaning = cleaning;
+        this.allPrice = allPrice;
     }
 
     @Override
@@ -54,6 +73,9 @@ public class Booking extends AbstractBaseEntity{
                 "id=" + id +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", breakfast=" + breakfast +
+                ", cleaning=" + cleaning +
+                ", allPrice" + allPrice +
                 '}';
     }
 }

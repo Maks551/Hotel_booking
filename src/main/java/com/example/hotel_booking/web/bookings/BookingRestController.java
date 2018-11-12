@@ -1,11 +1,11 @@
-package com.example.hotel_booking.web;
+package com.example.hotel_booking.web.bookings;
 
 import com.example.hotel_booking.model.Booking;
 import com.example.hotel_booking.service.BookingService;
+import com.example.hotel_booking.to.BookingTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
-import static com.example.hotel_booking.util.Util.DATE_PATTERN;
-import static com.example.hotel_booking.util.Util.getValidDates;
+import static com.example.hotel_booking.util.BookingUtil.createNewFromTo;
 import static com.example.hotel_booking.util.ValidationUtil.checkNew;
+import static com.example.hotel_booking.web.SecurityUtil.authUserId;
 
 @RestController
 @RequestMapping(value = BookingRestController.REST_URL)
@@ -33,9 +32,9 @@ public class BookingRestController {
         this.service = service;
     }
 
-    @GetMapping(value = "/all/my", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all-my", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Booking> getAllWithRoomsByUser() {
-        int userId = SecurityUtil.authUserId();
+        int userId = authUserId();
         log.info("get all booking with room by userId {}", userId);
         return service.getAllByUser(userId);
     }
@@ -48,12 +47,13 @@ public class BookingRestController {
 
     @PostMapping(value = "/{roomId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<Booking> createWithLocation(@Valid @RequestBody Booking booking,
+    public ResponseEntity<Booking> createWithLocation(@Valid @RequestBody BookingTo bookingTo,
                                                       @PathVariable("roomId") int roomId) {
-        checkNew(booking);
-        int userId = SecurityUtil.authUserId();
-        log.info("create booking {} for user {}", booking, userId);
-        Booking created = service.create(booking, roomId, userId);
+        checkNew(bookingTo);
+        int userId = authUserId();
+        Booking bookingNew = createNewFromTo(bookingTo);
+        log.info("create booking {} for users {}", bookingNew, userId);
+        Booking created = service.create(bookingNew, roomId, userId);
 
         URI uriOfNewResponse = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -62,16 +62,9 @@ public class BookingRestController {
         return ResponseEntity.created(uriOfNewResponse).body(created);
     }
 
-//    @GetMapping(value = "/price/{id}")
-//    public Integer getPrice(@PathVariable("id") int id,
-//                            @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = DATE_PATTERN) LocalDate startDate,
-//                            @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = DATE_PATTERN) LocalDate endDate) {
-//        LocalDate[] validDates = getValidDates(startDate, endDate);
-//        LocalDate validStartDate = validDates[0];
-//        LocalDate validEndDate = validDates[1];
-//
-//        log.info("get all available rooms between {} and {}", validStartDate, validEndDate);
-//
-//        return service.getPrice(id, validStartDate, validEndDate);
-//    }
+    @GetMapping(value = "/{id}/price", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Integer getTotalPrice(@PathVariable("id") int id) {
+        log.info("get price by Booking by id={}", id);
+        return service.getTotalPrice(id);
+    }
 }

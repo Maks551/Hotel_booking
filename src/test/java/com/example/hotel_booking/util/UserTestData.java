@@ -14,15 +14,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UserTestData {
     public static final int USER_ID = START_SEQ;
-    public static final int USER2_ID = USER_ID + 1;
-    public static final int USER3_ID = USER_ID + 2;
     public static final int ADMIN_ID = USER_ID + 3;
     public static final String USER_EMAIL = "first@gmail.com";
+    public static final String ADMIN_EMAIL = "admin@gmail.com";
 
-    public static final User USER = new User(USER_ID, "User1", "first@gmail.com", "password1", Role.ROLE_USER);
-    public static final User USER_2 = new User(USER2_ID, "User2", "second@gmail.com", "password2", Role.ROLE_USER);
-    public static final User USER_3 = new User(USER3_ID, "User3", "third@gmail.com", "password3", Role.ROLE_USER);
-    public static final User ADMIN = new User(ADMIN_ID, "User4", "fourth@gmail.com", "password4", Role.ROLE_USER, Role.ROLE_ADMIN);
+    public static final User USER = new User(USER_ID, "User1", USER_EMAIL, "password1", Role.ROLE_USER);
+    public static final User USER_2 = new User(USER_ID + 1, "User2", "second@gmail.com", "password2", Role.ROLE_USER);
+    public static final User USER_3 = new User(USER_ID + 2, "User3", "third@gmail.com", "password3", Role.ROLE_USER);
+    public static final User ADMIN = new User(ADMIN_ID, "Admin1", ADMIN_EMAIL, "password4", Role.ROLE_USER, Role.ROLE_ADMIN);
 
     public static final List<User> USER_LIST = Arrays.asList(USER, USER_2, USER_3, ADMIN);
 

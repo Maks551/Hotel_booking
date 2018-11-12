@@ -23,8 +23,4 @@ public interface CrudRoomRepository extends JpaRepository<Room, Integer> {
 
     @Override
     List<Room> findAll();
-
-//    @Transactional
-//    @Query("SELECT r FROM Room r JOIN FETCH Booking ")
-//    List<Room> getAllByAvailable(LocalDate startDate, LocalDate endDate);
 }

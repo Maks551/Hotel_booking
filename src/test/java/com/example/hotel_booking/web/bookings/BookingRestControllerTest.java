@@ -1,4 +1,4 @@
-package com.example.hotel_booking.web;
+package com.example.hotel_booking.web.bookings;
 
 import com.example.hotel_booking.AbstractControllerTest;
 import com.example.hotel_booking.model.Booking;
@@ -8,10 +8,13 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 
-import static com.example.hotel_booking.util.BookingTestData.BOOKING_LIST_BY_USER_1;
-import static com.example.hotel_booking.util.BookingTestData.LIST_BOOKINGS;
+import static com.example.hotel_booking.util.BookingTestData.*;
 import static com.example.hotel_booking.util.RoomTestData.ROOM_ID;
 import static com.example.hotel_booking.util.TestUtil.contentJson;
+import static com.example.hotel_booking.util.TestUtil.userHttpBasic;
+import static com.example.hotel_booking.util.UserTestData.ADMIN;
+import static com.example.hotel_booking.util.UserTestData.USER;
+import static com.example.hotel_booking.util.UserTestData.USER_ID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,9 +26,10 @@ class BookingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testCreate() throws Exception {
-        Booking created = new Booking(null, LocalDate.of(2018, 1, 1), LocalDate.of(2018, 1, 2));
+        Booking created = new Booking(null, LocalDate.of(2018, 12, 12), LocalDate.of(2018, 12, 13), true, false, 1900);
 
         mockMvc.perform(post(REST_URL + ROOM_ID)
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(created)))
                 .andExpect(status().isCreated())
@@ -34,7 +38,8 @@ class BookingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testGetAllWithRoomsByUser() throws Exception {
-        mockMvc.perform(get(REST_URL + "all/my"))
+        mockMvc.perform(get(REST_URL + "all-my")
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -43,10 +48,20 @@ class BookingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testGetAllWithRooms() throws Exception {
-        mockMvc.perform(get(REST_URL + "all"))
+        mockMvc.perform(get(REST_URL + "all")
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(LIST_BOOKINGS));
+    }
+    @Test
+    void testGetPrice() throws Exception {
+        mockMvc.perform(get(REST_URL + BOOKING_ID + "/price")
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(PRICE));
     }
 }

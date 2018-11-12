@@ -28,5 +28,6 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Override
     Optional<User> findById(Integer id);
 
-    User getByEmail(String email);
+    @Query("SELECT u FROM User u WHERE u.email =:email")
+    User getByEmail(@Param("email") String email);
 }

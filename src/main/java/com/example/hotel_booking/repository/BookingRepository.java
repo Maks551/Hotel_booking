@@ -11,9 +11,9 @@ public interface BookingRepository {
 
     Booking get(int id, int userId);
 
-    List<Booking> getAllBetweenWithRooms(LocalDate startDate, LocalDate endDate);
-
     List<Booking> getAllByUser(int userId);
 
     List<Booking> getAll();
+
+    Integer getPrice(int id);
 }

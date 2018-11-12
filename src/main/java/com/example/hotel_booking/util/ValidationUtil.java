@@ -30,4 +30,12 @@ public class ValidationUtil {
             throw new IllegalRequestDataException(bean + " must be new (id=null)");
         }
     }
+
+    public static void assureIdConsistent(HasId hasId, int id) {
+        if (hasId.isNew()) {
+            hasId.setId(id);
+        } else if (hasId.getId() != id){
+            throw new IllegalRequestDataException(hasId + " must be with id=" + id);
+        }
+    }
 }
