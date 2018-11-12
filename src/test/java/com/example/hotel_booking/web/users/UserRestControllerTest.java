@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 
 import static com.example.hotel_booking.util.TestUtil.userHttpBasic;
 import static com.example.hotel_booking.util.UserTestData.*;
+import static com.example.hotel_booking.web.json.JsonUtil.writeValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -66,5 +67,12 @@ class UserRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         assertMatch(service.getByEmail("new.email@gmail.com"), UserUtil.updateFromTo(new User(USER), updatedTo));
+    }
+
+
+    @Test
+    void testGetUnAuth() throws Exception {
+        mockMvc.perform(get(REST_URL))
+                .andExpect(status().isUnauthorized());
     }
 }

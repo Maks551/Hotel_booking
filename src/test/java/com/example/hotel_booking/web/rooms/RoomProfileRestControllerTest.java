@@ -1,6 +1,7 @@
 package com.example.hotel_booking.web.rooms;
 
 import com.example.hotel_booking.AbstractControllerTest;
+import com.example.hotel_booking.to.UserTo;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -8,9 +9,12 @@ import static com.example.hotel_booking.util.RoomTestData.*;
 import static com.example.hotel_booking.util.TestUtil.contentJson;
 import static com.example.hotel_booking.util.TestUtil.userHttpBasic;
 import static com.example.hotel_booking.util.UserTestData.USER;
+import static com.example.hotel_booking.web.json.JsonUtil.writeValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class RoomProfileRestControllerTest extends AbstractControllerTest {

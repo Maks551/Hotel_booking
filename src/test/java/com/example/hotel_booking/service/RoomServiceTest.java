@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.hotel_booking.util.RoomTestData.*;
+import static com.example.hotel_booking.util.UserTestData.ADMIN;
 import static com.example.hotel_booking.util.UserTestData.ADMIN_ID;
 
 class RoomServiceTest extends AbstractServiceTest {
@@ -43,7 +44,15 @@ class RoomServiceTest extends AbstractServiceTest {
     @Test
     void create() throws Exception {
         Room newRoom = new Room(null, 1, 1, 1000);
+        Room created = service.create(newRoom, ADMIN_ID);
+        newRoom.setId(created.getId());
+        assertMatch(newRoom, created);
+    }
 
-
+    @Test
+    void update() throws Exception {
+        Room updated = new Room(ROOM_ID, 1, 1, 1000);
+        service.update(updated, ADMIN_ID);
+        assertMatch(service.get(ROOM_ID), updated);
     }
 }

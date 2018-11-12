@@ -32,6 +32,13 @@ public class BookingRestController {
         this.service = service;
     }
 
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Booking get(@PathVariable("id") int id) {
+        int userId = authUserId();
+        log.info("get room {} for user {}", id, userId);
+        return service.get(id, userId);
+    }
+
     @GetMapping(value = "/all-my", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Booking> getAllWithRoomsByUser() {
         int userId = authUserId();
